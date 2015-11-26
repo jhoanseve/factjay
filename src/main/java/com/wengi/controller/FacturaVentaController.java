@@ -5,10 +5,13 @@
  */
 package com.wengi.controller;
 
+import static com.wengi.LogUtil.*;
 import com.wengi.entity.FacturaVenta;
+import com.wengi.services.FacturaVentaService;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,13 +24,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/facturas")
 public class FacturaVentaController {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(FacturaVentaController.class);
+    
+    @Autowired private FacturaVentaService facturaVentaService;
 
     @RequestMapping(value = "/generate", method = RequestMethod.POST)
     public FacturaVenta generate(@Valid @RequestBody FacturaVenta facturaVenta) {
-        System.out.println("generate: " + facturaVenta);
-        throw new UnsupportedOperationException();
+        logInfo(LOGGER, "Intentando generar factura [{}]", facturaVenta);
+        
+        logDebug(LOGGER, "Invocando servicio de generacion de facturas");
+        facturaVentaService.generate(facturaVenta);
+        
+        return facturaVenta;
     }
 
 }

@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Document
 @CompoundIndex(name = "identf_company", def = "{'identificacion': 1, 'company': 1}")
-class Cliente extends Persona {
+public class Cliente extends Persona {
     public static enum TYPE {
         NATURAL("N"),
         JURIDICA("N"),;
