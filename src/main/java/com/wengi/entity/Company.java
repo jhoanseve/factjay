@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
  *
  * @author jhoanseve2
  */
-public class Empresa {
+public class Company {
     @Id
     private String id;
     
@@ -28,7 +28,7 @@ public class Empresa {
     private Sede principalSede;
     private Address address;
 
-    public Empresa() {
+    public Company() {
     }
     
     public String getId() {
@@ -117,7 +117,7 @@ public class Empresa {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Empresa other = (Empresa) obj;
+        final Company other = (Company) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

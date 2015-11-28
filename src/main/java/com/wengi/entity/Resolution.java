@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
  *
  * @author jhoanseve2
  */
-public class Resoluccion {
+public class Resolution {
     @Id
     private String id;
     
@@ -25,13 +25,13 @@ public class Resoluccion {
     private Calendar dateApprobation;
     private Calendar dateRequest;
     private Calendar dateExpiration;
-    @Indexed @DBRef private Empresa company;
+    @Indexed @DBRef private Company company;
     
     private long initialRange;
     private long finalRange;
     private long currentNumber;
 
-    public Resoluccion() {
+    public Resolution() {
     }
 
     public String getId() {
@@ -90,11 +90,11 @@ public class Resoluccion {
         this.dateExpiration = dateExpiration;
     }
 
-    public Empresa getCompany() {
+    public Company getCompany() {
         return company;
     }
 
-    public void setCompany(Empresa company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
 
@@ -147,7 +147,7 @@ public class Resoluccion {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Resoluccion other = (Resoluccion) obj;
+        final Resolution other = (Resolution) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

@@ -6,8 +6,14 @@
 package com.wengi.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
@@ -51,28 +57,39 @@ public class FacturaVenta {
     private String id;
     
     /** prefijo asignado a la factura */
+    @NotBlank
+    @Length(min = 1)
     private String prefix;
     /** numero asignado a la factura */
+    @NotBlank
+    @Length(min = 1)
     private String number;
     /** fecha de la facturacion */
+    @NotNull
     private Calendar dateInvoice;
     /** fecha en que se registro la factura en el sistema */
     private Calendar dateRegister;
     /** tipo de venta realizada */
+    @NotNull
     private TYPE type;
     /** esatdo actual de la factura */
-    private STATUS status;
+    private STATUS status = STATUS.PENDIENTE;
     /** indica si se registra el pago automaticamente se genera la factura */
     private boolean autoPay;
     /** usuario que registro la factura en el sistema */
     private String userSession;
     
     /** caja donde se genero la factura */
+    @NotNull
+    @DBRef
     private Caja caja;
     /** resoluccion utilizada para la facturacion */
-    private Resoluccion resolution;
+    @NotNull
+    @DBRef
+    private Resolution resolution;
     /** cliente al que se le genero la factura */
     @DBRef
+    @NotNull
     private Cliente client;
     /** empleado que realiza la venta */
     @DBRef
@@ -108,6 +125,13 @@ public class FacturaVenta {
     private String leyend1;
     private String leyend2;
     private String leyend3;
+    
+    /**
+     * Detalles de la factura
+     */
+    @NotNull
+    @NotEmpty
+    private List<ItemServiceFactura> services; 
 
     public FacturaVenta() {
     }
@@ -192,11 +216,11 @@ public class FacturaVenta {
         this.caja = caja;
     }
 
-    public Resoluccion getResolution() {
+    public Resolution getResolution() {
         return resolution;
     }
 
-    public void setResolution(Resoluccion resolution) {
+    public void setResolution(Resolution resolution) {
         this.resolution = resolution;
     }
 
@@ -328,6 +352,25 @@ public class FacturaVenta {
         this.leyend3 = leyend3;
     }
 
+    public List<ItemServiceFactura> getServices() {
+        return services;
+    }
+
+    public void setServices(List<ItemServiceFactura> services) {
+        this.services = services;
+    }
+
+    
+    
+    public void addServiceItem(ItemServiceFactura item) {
+        if(services == null)
+            services = new ArrayList<>();
+        
+        services.add(item);
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 5;

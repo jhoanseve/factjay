@@ -32,7 +32,7 @@ public class Cliente extends Persona {
     private String id;  
     private boolean isSender;
     private boolean status;
-    @DBRef private Empresa company;
+    @DBRef private Company company;
 
     public Cliente() {
     }
@@ -61,11 +61,11 @@ public class Cliente extends Persona {
         this.status = status;
     }
 
-    public Empresa getCompany() {
+    public Company getCompany() {
         return company;
     }
 
-    public void setCompany(Empresa company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
 

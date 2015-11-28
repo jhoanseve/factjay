@@ -11,6 +11,7 @@ import static com.wengi.TestUtil.convertObjectToJsonBytes;
 import com.wengi.WebTestConfig;
 import com.wengi.entity.*;
 import com.wengi.services.FacturaVentaService;
+import java.util.Calendar;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -75,11 +76,12 @@ public class FacturaVentaControllerTest {
 
         when(facturaVentaService.generate(facturaVenta)).thenReturn(facturaVenta2);
         
-        mockMvc.perform(post("/facturas/generate")
+        ResultActions ra = mockMvc.perform(post("/facturas/generate")
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(facturaVenta))
         );
         
+        LOGGER.info("Response testGenerate$1()==>> [{}]", ra.andReturn().getResponse().getContentAsString());
         verify(facturaVentaService).generate(facturaVenta);
     }
 
@@ -156,9 +158,17 @@ public class FacturaVentaControllerTest {
         facturaVenta.setId("123456789");
         facturaVenta.setNumber("123");
         facturaVenta.setClient(new Cliente());
+        facturaVenta.setType(FacturaVenta.TYPE.CONTADO);
+        facturaVenta.setDateInvoice(Calendar.getInstance());
+        Resolution resolution = new Resolution();
+        facturaVenta.setCaja(new Caja("CAJA01", "Caja Principal", new Sede(), resolution));
+        facturaVenta.setResolution(resolution);
+        
+        Service s = new Service("SC01", "SN01", 12000.0, null, true, null);
+        ItemServiceFactura item = new ItemServiceFactura(s, s.getUnitaryValue(), 1);
+        facturaVenta.addServiceItem(item);
         
         
         return facturaVenta;
     }
-
 }

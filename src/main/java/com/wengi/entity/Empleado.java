@@ -21,7 +21,7 @@ class Empleado extends Persona {
     private User userFact;
     @Indexed
     @DBRef
-    private Empresa company;
+    private Company company;
 
     public Empleado() {
     }
@@ -50,11 +50,11 @@ class Empleado extends Persona {
         this.userFact = userFact;
     }
 
-    public Empresa getCompany() {
+    public Company getCompany() {
         return company;
     }
 
-    public void setCompany(Empresa company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
 

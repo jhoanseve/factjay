@@ -20,12 +20,12 @@ public class Caja {
     private String code;
     private String description;
     @DBRef private Sede sede;
-    @DBRef private Resoluccion resolution;
+    @DBRef private Resolution resolution;
 
     public Caja() {
     }
 
-    public Caja(String code, String description, Sede sede, Resoluccion resolution) {
+    public Caja(String code, String description, Sede sede, Resolution resolution) {
         this.code = code;
         this.description = description;
         this.sede = sede;
@@ -64,11 +64,11 @@ public class Caja {
         this.sede = sede;
     }
 
-    public Resoluccion getResolution() {
+    public Resolution getResolution() {
         return resolution;
     }
 
-    public void setResolution(Resoluccion resolution) {
+    public void setResolution(Resolution resolution) {
         this.resolution = resolution;
     }
 

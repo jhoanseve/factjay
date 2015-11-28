@@ -23,7 +23,7 @@ class User {
     
     @DBRef
     @Indexed 
-    private Empresa company;
+    private Company company;
 
     public User() {
     }
