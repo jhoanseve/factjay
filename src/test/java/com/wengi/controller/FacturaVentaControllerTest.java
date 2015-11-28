@@ -86,6 +86,22 @@ public class FacturaVentaControllerTest {
         verify(facturaVentaService).generate(facturaVenta);
     }
 
+    /**
+     * Verifica que se ejecuten las validaciones
+     * @throws Exception 
+     */
+    @Test
+    public void testGenerate$2_valitations() throws Exception {
+        FacturaVenta facturaVenta = new FacturaVenta();
+        ResultActions ra = mockMvc.perform(post("/facturas/generate")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(convertObjectToJsonBytes(facturaVenta))
+        ).andExpect(status().isBadRequest());
+        
+        LOGGER.info("Response testGenerate$1()==>> [{}]", ra.andReturn().getResponse().getContentAsString());
+        verifyZeroInteractions(facturaVentaService);
+    }
+
     
     /**
      * Verifica la validacion cuando la factura es null
@@ -101,7 +117,7 @@ public class FacturaVentaControllerTest {
                 .content(convertObjectToJsonBytes(facturaVenta))
         ).andExpect(status().is5xxServerError());
         
-        verify(facturaVentaService, never()).generate(facturaVenta);
+        verifyZeroInteractions(facturaVentaService);
     }
 
     private FacturaVenta facturaBuilder(String id) {
