@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.wengi;
+package com.wengi.util;
 
 import org.slf4j.Logger;
 
@@ -11,14 +11,14 @@ import org.slf4j.Logger;
  *
  * @author jhoanseve2
  */
-public class LogUtil {
+public interface LogUtil {
     
-    public static void logInfo(Logger logger, String msg, Object ... params) {
+    default public void logInfo(Logger logger, String msg, Object ... params) {
         if(logger.isInfoEnabled())
             logger.info(msg, params);
     }
     
-    public static void logDebug(Logger logger, String msg, Object ... params) {
+    default public void logDebug(Logger logger, String msg, Object ... params) {
         if(logger.isDebugEnabled())
             logger.debug(msg, params);
     }

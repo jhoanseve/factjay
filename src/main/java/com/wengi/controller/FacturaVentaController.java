@@ -6,9 +6,9 @@
 package com.wengi.controller;
 
 import com.wengi.FactjayException;
-import static com.wengi.LogUtil.*;
 import com.wengi.entity.FacturaVenta;
 import com.wengi.services.FacturaVentaService;
+import com.wengi.util.LogUtil;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/facturas")
-public class FacturaVentaController {
+public class FacturaVentaController implements LogUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(FacturaVentaController.class);
     
     @Autowired private FacturaVentaService facturaVentaService;
