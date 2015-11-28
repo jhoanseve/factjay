@@ -79,7 +79,8 @@ public class FacturaVentaControllerTest {
         ResultActions ra = mockMvc.perform(post("/facturas/generate")
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(facturaVenta))
-        );
+        ).andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(facturaVenta2.getId())));
         
         LOGGER.info("Response testGenerate$1()==>> [{}]", ra.andReturn().getResponse().getContentAsString());
         verify(facturaVentaService).generate(facturaVenta);
@@ -90,7 +91,7 @@ public class FacturaVentaControllerTest {
      * Verifica la validacion cuando la factura es null
      * @throws Exception 
      */
-    @Test(expected = FactjayException.class)
+    @Test
     public void testGenerate$2_factura_null() throws Exception {
         FacturaVenta facturaVenta = null;
         
@@ -98,51 +99,9 @@ public class FacturaVentaControllerTest {
         mockMvc.perform(post("/facturas/generate")
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(facturaVenta))
-        );
+        ).andExpect(status().is5xxServerError());
         
         verify(facturaVentaService, never()).generate(facturaVenta);
-    }
-
-    
-    /**
-     * Verifica la validacion cuando la factura es generada exitosamente
-     * @throws Exception 
-     */
-    @Test
-    public void testGenerate$3() throws Exception {
-        FacturaVenta facturaVenta = facturaBuilder();
-        FacturaVenta facturaVenta2 = facturaBuilder("123456789");
-        
-        when(facturaVentaService.generate(facturaVenta)).thenReturn(facturaVenta2);
-        
-        ResultActions resultActions = mockMvc.perform(post("/facturas/generate")
-                .contentType(APPLICATION_JSON_UTF8)
-                .content(convertObjectToJsonBytes(facturaVenta))
-        ).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(facturaVenta2.getId())));
-        
-        verify(facturaVentaService).generate(facturaVenta);
-    }
-    
-    /**
-     * Verifica la validacion cuando la factura NO tiene detalle
-     * @throws Exception 
-     */
-    @Test
-    public void testGenerate$4() throws Exception {
-        fail();
-        FacturaVenta facturaVenta = facturaBuilder();
-        FacturaVenta facturaVenta2 = facturaBuilder("123456789");
-        
-        when(facturaVentaService.generate(facturaVenta)).thenReturn(facturaVenta2);
-        
-        ResultActions resultActions = mockMvc.perform(post("/facturas/generate")
-                .contentType(APPLICATION_JSON_UTF8)
-                .content(convertObjectToJsonBytes(facturaVenta))
-        ).andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(facturaVenta2.getId())));
-        
-        verify(facturaVentaService).generate(facturaVenta);
     }
 
     private FacturaVenta facturaBuilder(String id) {
@@ -155,7 +114,6 @@ public class FacturaVentaControllerTest {
     private FacturaVenta facturaBuilder() {
         FacturaVenta facturaVenta = new FacturaVenta();
         facturaVenta.setPrefix("ABC");
-        facturaVenta.setId("123456789");
         facturaVenta.setNumber("123");
         facturaVenta.setClient(new Cliente());
         facturaVenta.setType(FacturaVenta.TYPE.CONTADO);

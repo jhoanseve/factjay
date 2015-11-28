@@ -5,6 +5,7 @@
  */
 package com.wengi.controller;
 
+import com.wengi.FactjayException;
 import static com.wengi.LogUtil.*;
 import com.wengi.entity.FacturaVenta;
 import com.wengi.services.FacturaVentaService;
@@ -31,9 +32,13 @@ public class FacturaVentaController {
     @RequestMapping(value = "/generate", method = RequestMethod.POST)
     public FacturaVenta generate(@Valid @RequestBody FacturaVenta facturaVenta) {
         logInfo(LOGGER, "Intentando generar factura [{}]", facturaVenta);
+        if(facturaVenta == null) {
+            LOGGER.error("La factura a generar NO puede ser nula");
+            throw new FactjayException("La factura a generar no puede ser nula");
+        }
         
         logDebug(LOGGER, "Invocando servicio de generacion de facturas");
-        facturaVentaService.generate(facturaVenta);
+        facturaVenta = facturaVentaService.generate(facturaVenta);
         
         return facturaVenta;
     }
