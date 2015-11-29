@@ -22,7 +22,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
  * 
  * @author jhoanseve2
  */
-public class FacturaVenta {
+public class Invoice {
     /**
      * Representa el domino de los diferentes tipos de venta
      */
@@ -131,9 +131,9 @@ public class FacturaVenta {
      */
     @NotNull
     @NotEmpty
-    private List<ItemServiceFactura> services; 
+    private List<ItemServiceInvoice> services; 
 
-    public FacturaVenta() {
+    public Invoice() {
     }
 
     public String getId() {
@@ -352,17 +352,17 @@ public class FacturaVenta {
         this.leyend3 = leyend3;
     }
 
-    public List<ItemServiceFactura> getServices() {
+    public List<ItemServiceInvoice> getServices() {
         return services;
     }
 
-    public void setServices(List<ItemServiceFactura> services) {
+    public void setServices(List<ItemServiceInvoice> services) {
         this.services = services;
     }
 
     
     
-    public void addServiceItem(ItemServiceFactura item) {
+    public void addServiceItem(ItemServiceInvoice item) {
         if(services == null)
             services = new ArrayList<>();
         
@@ -386,7 +386,7 @@ public class FacturaVenta {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final FacturaVenta other = (FacturaVenta) obj;
+        final Invoice other = (Invoice) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }

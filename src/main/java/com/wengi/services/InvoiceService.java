@@ -5,18 +5,18 @@
  */
 package com.wengi.services;
 
-import com.wengi.entity.FacturaVenta;
+import com.wengi.entity.Invoice;
 
 /**
  *
  * @author jhoanseve2
  */
-public interface FacturaVentaService {
+public interface InvoiceService {
     
     /***
      * Metodo encargado de la generacion de una factura
      * @param facturaVenta
      * @return 
      */
-    FacturaVenta generate(FacturaVenta facturaVenta);
+    Invoice generate(Invoice facturaVenta);
 }

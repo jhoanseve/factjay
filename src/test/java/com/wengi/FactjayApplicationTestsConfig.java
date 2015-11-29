@@ -1,6 +1,6 @@
 package com.wengi;
 
-import com.wengi.controller.FacturaVentaController;
+import com.wengi.controller.InvoiceController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -13,8 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class FactjayApplicationTestsConfig {
 
 	@Bean
-        public FacturaVentaController facturaVentaController() {
-            return Mockito.mock(FacturaVentaController.class);
+        public InvoiceController facturaVentaController() {
+            return Mockito.mock(InvoiceController.class);
         }
 
 }

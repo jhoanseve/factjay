@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.Range;
  *
  * @author jhoanseve2
  */
-public class ItemServiceFactura {
+public class ItemServiceInvoice {
     @NotNull
     private Service service;
     @NotNull
@@ -28,10 +28,10 @@ public class ItemServiceFactura {
     private Double imposts;
     private Double discounts;
 
-    public ItemServiceFactura() {
+    public ItemServiceInvoice() {
     }
 
-    public ItemServiceFactura(Service service, Double unitaryValue, Integer quantity) {
+    public ItemServiceInvoice(Service service, Double unitaryValue, Integer quantity) {
         this.service = service;
         this.unitaryValue = unitaryValue;
         this.quantity = quantity;

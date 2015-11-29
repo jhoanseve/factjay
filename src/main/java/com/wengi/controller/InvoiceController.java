@@ -5,9 +5,9 @@
  */
 package com.wengi.controller;
 
-import com.wengi.FactjayException;
-import com.wengi.entity.FacturaVenta;
-import com.wengi.services.FacturaVentaService;
+import com.wengi.entity.Invoice;
+import com.wengi.exception.FactjayException;
+import com.wengi.services.InvoiceService;
 import com.wengi.util.LogUtil;
 import javax.validation.Valid;
 import org.slf4j.Logger;
@@ -23,24 +23,24 @@ import org.springframework.web.bind.annotation.RestController;
  * @author jhoanseve2
  */
 @RestController
-@RequestMapping("/facturas")
-public class FacturaVentaController implements LogUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FacturaVentaController.class);
+@RequestMapping("/invoice")
+public class InvoiceController implements LogUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceController.class);
     
-    @Autowired private FacturaVentaService facturaVentaService;
+    @Autowired private InvoiceService invoiceService;
 
     @RequestMapping(value = "/generate", method = RequestMethod.POST)
-    public FacturaVenta generate(@Valid @RequestBody FacturaVenta facturaVenta) {
-        logInfo(LOGGER, "Intentando generar factura [{}]", facturaVenta);
-        if(facturaVenta == null) {
+    public Invoice generate(@Valid @RequestBody Invoice invoice) {
+        logInfo(LOGGER, "Intentando generar factura [{}]", invoice);
+        if(invoice == null) {
             LOGGER.error("La factura a generar NO puede ser nula");
             throw new FactjayException("La factura a generar no puede ser nula");
         }
         
         logDebug(LOGGER, "Invocando servicio de generacion de facturas");
-        facturaVenta = facturaVentaService.generate(facturaVenta);
+        invoice = invoiceService.generate(invoice);
         
-        return facturaVenta;
+        return invoice;
     }
 
 }

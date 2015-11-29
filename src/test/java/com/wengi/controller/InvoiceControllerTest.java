@@ -5,12 +5,11 @@
  */
 package com.wengi.controller;
 
-import com.wengi.FactjayException;
 import static com.wengi.TestUtil.APPLICATION_JSON_UTF8;
 import static com.wengi.TestUtil.convertObjectToJsonBytes;
 import com.wengi.WebTestConfig;
 import com.wengi.entity.*;
-import com.wengi.services.FacturaVentaService;
+import com.wengi.services.InvoiceService;
 import java.util.Calendar;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
@@ -41,18 +40,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {WebTestConfig.class})
 @WebAppConfiguration
-public class FacturaVentaControllerTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FacturaVentaControllerTest.class);
+public class InvoiceControllerTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceControllerTest.class);
 
     private MockMvc mockMvc;
 
     @InjectMocks
-    private FacturaVentaController controller;
+    private InvoiceController controller;
     
     @Mock
-    private FacturaVentaService facturaVentaService;
+    private InvoiceService invoiceService;
 
-    public FacturaVentaControllerTest() {
+    public InvoiceControllerTest() {
     }
 
     @Before
@@ -71,10 +70,10 @@ public class FacturaVentaControllerTest {
      */
     @Test
     public void testGenerate$1() throws Exception {
-        FacturaVenta facturaVenta = facturaBuilder();
-        FacturaVenta facturaVenta2 = facturaBuilder("123456");
+        Invoice facturaVenta = facturaBuilder();
+        Invoice facturaVenta2 = facturaBuilder("123456");
 
-        when(facturaVentaService.generate(facturaVenta)).thenReturn(facturaVenta2);
+        when(invoiceService.generate(facturaVenta)).thenReturn(facturaVenta2);
         
         ResultActions ra = mockMvc.perform(post("/facturas/generate")
                 .contentType(APPLICATION_JSON_UTF8)
@@ -83,7 +82,7 @@ public class FacturaVentaControllerTest {
                 .andExpect(jsonPath("$.id", is(facturaVenta2.getId())));
         
         LOGGER.info("Response testGenerate$1()==>> [{}]", ra.andReturn().getResponse().getContentAsString());
-        verify(facturaVentaService).generate(facturaVenta);
+        verify(invoiceService).generate(facturaVenta);
     }
 
     /**
@@ -92,14 +91,14 @@ public class FacturaVentaControllerTest {
      */
     @Test
     public void testGenerate$2_valitations() throws Exception {
-        FacturaVenta facturaVenta = new FacturaVenta();
+        Invoice facturaVenta = new Invoice();
         ResultActions ra = mockMvc.perform(post("/facturas/generate")
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(convertObjectToJsonBytes(facturaVenta))
         ).andExpect(status().isBadRequest());
         
         LOGGER.info("Response testGenerate$1()==>> [{}]", ra.andReturn().getResponse().getContentAsString());
-        verifyZeroInteractions(facturaVentaService);
+        verifyZeroInteractions(invoiceService);
     }
 
     
@@ -109,7 +108,7 @@ public class FacturaVentaControllerTest {
      */
     @Test
     public void testGenerate$2_factura_null() throws Exception {
-        FacturaVenta facturaVenta = null;
+        Invoice facturaVenta = null;
         
         
         mockMvc.perform(post("/facturas/generate")
@@ -117,29 +116,29 @@ public class FacturaVentaControllerTest {
                 .content(convertObjectToJsonBytes(facturaVenta))
         ).andExpect(status().is5xxServerError());
         
-        verifyZeroInteractions(facturaVentaService);
+        verifyZeroInteractions(invoiceService);
     }
 
-    private FacturaVenta facturaBuilder(String id) {
-        FacturaVenta facturaVenta = facturaBuilder();
+    private Invoice facturaBuilder(String id) {
+        Invoice facturaVenta = facturaBuilder();
         facturaVenta.setId(id);
         
         return facturaVenta;
     }
 
-    private FacturaVenta facturaBuilder() {
-        FacturaVenta facturaVenta = new FacturaVenta();
+    private Invoice facturaBuilder() {
+        Invoice facturaVenta = new Invoice();
         facturaVenta.setPrefix("ABC");
         facturaVenta.setNumber("123");
         facturaVenta.setClient(new Cliente());
-        facturaVenta.setType(FacturaVenta.TYPE.CONTADO);
+        facturaVenta.setType(Invoice.TYPE.CONTADO);
         facturaVenta.setDateInvoice(Calendar.getInstance());
         Resolution resolution = new Resolution();
         facturaVenta.setCaja(new Caja("CAJA01", "Caja Principal", new Sede(), resolution));
         facturaVenta.setResolution(resolution);
         
         Service s = new Service("SC01", "SN01", 12000.0, null, true, null);
-        ItemServiceFactura item = new ItemServiceFactura(s, s.getUnitaryValue(), 1);
+        ItemServiceInvoice item = new ItemServiceInvoice(s, s.getUnitaryValue(), 1);
         facturaVenta.addServiceItem(item);
         
         

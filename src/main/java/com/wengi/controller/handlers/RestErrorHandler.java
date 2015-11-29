@@ -5,7 +5,7 @@
  */
 package com.wengi.controller.handlers;
 
-import com.wengi.FactjayException;
+import com.wengi.exception.FactjayException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

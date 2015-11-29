@@ -5,8 +5,8 @@
  */
 package com.wengi.services.impl;
 
-import com.wengi.entity.FacturaVenta;
-import com.wengi.services.FacturaVentaService;
+import com.wengi.entity.Invoice;
+import com.wengi.services.InvoiceService;
 import com.wengi.util.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +15,11 @@ import org.slf4j.LoggerFactory;
  *
  * @author jhoanseve2
  */
-public class FacturaVentaServiceImpl implements LogUtil, FacturaVentaService {
-    private static final Logger logger = LoggerFactory.getLogger(FacturaVentaServiceImpl.class);
+public class InvoiceServiceImpl implements LogUtil, InvoiceService {
+    private static final Logger logger = LoggerFactory.getLogger(InvoiceServiceImpl.class);
 
     @Override
-    public FacturaVenta generate(FacturaVenta facturaVenta) {
+    public Invoice generate(Invoice facturaVenta) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
