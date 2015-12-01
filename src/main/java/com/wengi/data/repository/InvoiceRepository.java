@@ -12,6 +12,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  *
  * @author jhoanseve2
  */
-public interface InvoiceRepository extends MongoRepository<Invoice, String>{
-    
+public interface InvoiceRepository extends MongoRepository<Invoice, String> {
+
 }

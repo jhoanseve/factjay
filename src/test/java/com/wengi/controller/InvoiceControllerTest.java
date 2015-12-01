@@ -70,8 +70,8 @@ public class InvoiceControllerTest {
      */
     @Test
     public void testGenerate$1() throws Exception {
-        Invoice facturaVenta = facturaBuilder();
-        Invoice facturaVenta2 = facturaBuilder("123456");
+        Invoice facturaVenta = invoiceBuilder();
+        Invoice facturaVenta2 = invoiceBuilder("123456");
 
         when(invoiceService.generate(facturaVenta)).thenReturn(facturaVenta2);
         
@@ -119,29 +119,29 @@ public class InvoiceControllerTest {
         verifyZeroInteractions(invoiceService);
     }
 
-    private Invoice facturaBuilder(String id) {
-        Invoice facturaVenta = facturaBuilder();
-        facturaVenta.setId(id);
+    private Invoice invoiceBuilder(String id) {
+        Invoice invoice = invoiceBuilder();
+        invoice.setId(id);
         
-        return facturaVenta;
+        return invoice;
     }
 
-    private Invoice facturaBuilder() {
-        Invoice facturaVenta = new Invoice();
-        facturaVenta.setPrefix("ABC");
-        facturaVenta.setNumber("123");
-        facturaVenta.setClient(new Cliente());
-        facturaVenta.setType(Invoice.TYPE.CONTADO);
-        facturaVenta.setDateInvoice(Calendar.getInstance());
+    private Invoice invoiceBuilder() {
+        Invoice invoice = new Invoice();
+        invoice.setPrefix("ABC");
+        invoice.setNumber("123");
+        invoice.setClient(new Cliente());
+        invoice.setType(Invoice.TYPE.CONTADO);
+        invoice.setDateInvoice(Calendar.getInstance());
         Resolution resolution = new Resolution();
-        facturaVenta.setCaja(new Caja("CAJA01", "Caja Principal", new Sede(), resolution));
-        facturaVenta.setResolution(resolution);
+        invoice.setCaja(new Caja("CAJA01", "Caja Principal", new Sede(), resolution));
+        invoice.setResolution(resolution);
         
         Service s = new Service("SC01", "SN01", 12000.0, null, true, null);
         ItemServiceInvoice item = new ItemServiceInvoice(s, s.getUnitaryValue(), 1);
-        facturaVenta.addServiceItem(item);
+        invoice.addServiceItem(item);
         
         
-        return facturaVenta;
+        return invoice;
     }
 }
