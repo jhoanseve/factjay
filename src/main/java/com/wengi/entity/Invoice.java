@@ -131,7 +131,7 @@ public class Invoice {
      */
     @NotNull
     @NotEmpty
-    private List<ItemServiceInvoice> services; 
+    private List<ServiceInvoice> services; 
 
     public Invoice() {
     }
@@ -352,17 +352,17 @@ public class Invoice {
         this.leyend3 = leyend3;
     }
 
-    public List<ItemServiceInvoice> getServices() {
+    public List<ServiceInvoice> getServices() {
         return services;
     }
 
-    public void setServices(List<ItemServiceInvoice> services) {
+    public void setServices(List<ServiceInvoice> services) {
         this.services = services;
     }
 
     
     
-    public void addServiceItem(ItemServiceInvoice item) {
+    public void addServiceItem(ServiceInvoice item) {
         if(services == null)
             services = new ArrayList<>();
         

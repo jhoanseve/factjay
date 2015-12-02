@@ -5,6 +5,8 @@
  */
 package com.wengi.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -40,6 +42,8 @@ public class Service {
     @Indexed
     @DBRef
     private Company company;
+    
+    private List<ServiceImpost> imposts;
 
     public Service() {
     }
@@ -51,6 +55,18 @@ public class Service {
         this.category = category;
         this.status = status;
         this.company = company;
+    }
+    
+    public void addImpost(Impost impost, Double value) {        
+        addImpost(new ServiceImpost(impost, value));
+    }
+    
+    public void addImpost(ServiceImpost serviceImpost) {
+        if(imposts == null) {
+            imposts = new ArrayList<>();
+        }
+        
+        imposts.add(serviceImpost);
     }
 
     public String getId() {
@@ -107,6 +123,14 @@ public class Service {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public List<ServiceImpost> getImposts() {
+        return imposts;
+    }
+
+    public void setImposts(List<ServiceImpost> imposts) {
+        this.imposts = imposts;
     }
 
     @Override

@@ -7,7 +7,7 @@ package com.wengi.services.impl;
 
 import com.wengi.data.repository.InvoiceRepository;
 import com.wengi.entity.Invoice;
-import com.wengi.entity.ItemServiceInvoice;
+import com.wengi.entity.ServiceInvoice;
 import com.wengi.services.InvoiceService;
 import com.wengi.util.LogUtil;
 import java.math.BigDecimal;
@@ -35,7 +35,7 @@ public class InvoiceServiceImpl implements LogUtil, InvoiceService {
 //            final BigDecimal subtotal = new BigDecimal(service.getQuantity() * service.getUnitaryValue());
 //            total = subtotal.add(total);
 //        });
-        for(ItemServiceInvoice service : invoice.getServices()) {
+        for(ServiceInvoice service : invoice.getServices()) {
             total = total.add(new BigDecimal(service.getQuantity() * service.getUnitaryValue()));
         }
         

@@ -8,11 +8,14 @@ package com.wengi.services.impl;
 import com.wengi.data.repository.InvoiceRepository;
 import com.wengi.entity.Caja;
 import com.wengi.entity.Cliente;
+import com.wengi.entity.Impost;
+import static com.wengi.entity.Impost.TYPE.PERCENTAGE;
 import com.wengi.entity.Invoice;
-import com.wengi.entity.ItemServiceInvoice;
+import com.wengi.entity.ServiceInvoice;
 import com.wengi.entity.Resolution;
 import com.wengi.entity.Sede;
 import com.wengi.entity.Service;
+import com.wengi.entity.ServiceImpost;
 import com.wengi.services.InvoiceService;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -41,9 +44,9 @@ public class InvoiceServiceImplTest {
      * Factura con un solo item servicio sin impuestos
      */
     @Test
-    public void testGenerate() {
+    public void testGenerate$1() {
         Double unitaryValue = 12000.0;
-        ItemServiceInvoice iService = serviceBuilder(unitaryValue, 1);
+        ServiceInvoice iService = serviceBuilder(unitaryValue, 1, false, 0.0);
         Invoice invoice = invoiceBuilder(iService);
         String id = "123123456";
         Invoice invoice2 = invoiceBuilder(id, invoice, BigDecimal.valueOf(unitaryValue), 
@@ -68,6 +71,41 @@ public class InvoiceServiceImplTest {
         assertEquals(response.getTotalServices(), BigDecimal.valueOf(unitaryValue));
         assertEquals(response.getId(), id);
     }
+
+    /**
+     * Factura con un solo item servicio con impuestos
+     */
+    @Test
+    public void testGenerate$2() {
+        Double unitaryValue = 10000.0;
+        Double ivaValue = 16.0;
+        Double total = (unitaryValue * ivaValue / 100) + unitaryValue;
+        
+        ServiceInvoice iService = serviceBuilder(unitaryValue, 1, true, ivaValue);
+        Invoice invoice = invoiceBuilder(iService);
+        String id = "123123456";
+        Invoice invoice2 = invoiceBuilder(id, invoice, BigDecimal.valueOf(unitaryValue), 
+                BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.valueOf(unitaryValue));
+        
+        //definicion de escenario
+        when(invoiceRepository.save(invoice)).thenReturn(invoice2);
+        
+        //Invocaion de servicio
+        Invoice response = service.generate(invoice);
+        
+        //validaciones
+        verify(invoiceRepository).save(invoice);
+        assertNotNull(response);
+        assertNotNull(response.getId());
+        assertNotNull(response.getTotal());
+        assertNotNull(response.getTotalImpost());
+        assertNotNull(response.getTotalProducts());
+        assertNotNull(response.getTotalServices());
+        assertEquals(BigDecimal.valueOf(total), response.getTotal());
+        assertEquals(BigDecimal.ZERO, response.getTotalProducts());
+        assertEquals(BigDecimal.valueOf(total), response.getTotalServices());
+        assertEquals(id, response.getId());
+    }
     
     
     
@@ -85,7 +123,7 @@ public class InvoiceServiceImplTest {
         return invoice;
     }
 
-    private Invoice invoiceBuilder(ItemServiceInvoice item) {
+    private Invoice invoiceBuilder(ServiceInvoice item) {
         Invoice invoice = new Invoice();
         invoice.setPrefix("ABC");
         invoice.setNumber("123");
@@ -102,9 +140,18 @@ public class InvoiceServiceImplTest {
         return invoice;
     }
 
-    private ItemServiceInvoice serviceBuilder(Double unitaryValue, int quantity) {
+    private ServiceInvoice serviceBuilder(Double unitaryValue, int quantity, boolean iva, Double ivaValue) {
         Service s = new Service("SC01", "SN01", unitaryValue, null, true, null);
-        ItemServiceInvoice item = new ItemServiceInvoice(s, s.getUnitaryValue(), quantity);
+        
+        if(iva) {
+            Impost impost = new Impost();
+            impost.setCode("IVA");
+            impost.setName("IVA");
+            impost.setType(PERCENTAGE);
+            s.addImpost(impost, ivaValue);
+        }
+        
+        ServiceInvoice item = new ServiceInvoice(s, s.getUnitaryValue(), quantity);
         return item;
     }
     

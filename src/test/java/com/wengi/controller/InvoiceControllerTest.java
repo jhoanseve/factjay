@@ -138,7 +138,7 @@ public class InvoiceControllerTest {
         invoice.setResolution(resolution);
         
         Service s = new Service("SC01", "SN01", 12000.0, null, true, null);
-        ItemServiceInvoice item = new ItemServiceInvoice(s, s.getUnitaryValue(), 1);
+        ServiceInvoice item = new ServiceInvoice(s, s.getUnitaryValue(), 1);
         invoice.addServiceItem(item);
         
         
